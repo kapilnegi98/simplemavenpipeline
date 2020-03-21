@@ -22,12 +22,18 @@ pipeline {
                 bat "mvn clean"
         }
     }
-  stage('SonarQube analysis') {
-    def scannerHome = tool 'SonarScanner 4.0';
-    withSonarQubeEnv('sonar scanner') { // If you have configured more than one global server connection, you can specify its name
-      bat "${scannerHome}/bin/sonar-scanner"
+ stage('Sonarqube') {
+    environment {
+        scannerHome = tool 'sonar scanner'
     }
-  
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            bat "${scannerHome}/bin/sonar-scanner"
+        }
+        timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
 }
   }
 
