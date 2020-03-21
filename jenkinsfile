@@ -28,7 +28,7 @@ pipeline {
              scannerHome = tool 'sonar scanner';
         }
      withSonarQubeEnv('SonarQube') {
-         bat "${scannerHome}/bin/sonar-scanner.bat" 
+      
     }
 
     }
