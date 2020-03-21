@@ -22,16 +22,17 @@ pipeline {
                 bat "mvn clean"
         }
     }
-    stage('Sonarqube') {
-    environment {
-        scannerHome = tool 'sonar scanner'
-    }
+    stage('Sonarqube analysis') {
     steps {
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
+    script {
+             scannerHome = tool 'sonar scanner';
         }
+     withSonarQubeEnv('SonarQube') {
+         bat "${scannerHome}/bin/sonar-scanner.bat" 
     }
-}
+
+    }
+        }
 
   }
 
